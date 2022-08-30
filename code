@@ -1,0 +1,45 @@
+import pymongo
+
+client=pymongo.MongoClient('mongodb+srv://sedhu:asdfg@cluster0.74ug1.mongodb.net/?retryWrites=true&w=majority')
+db=client.billing
+records=db.fruits_shop
+
+fruitprise={'apple':150,'orange':100,'grapes':75,'banana':50,
+            'pineapple':140,'strawberry':200,'papaya':60}
+odritem=[]
+fruits={1:'apple',2:'orange',3:'grapes',4:'banana',
+        5:'pineapple',6:'strawberry',7:'papaya'}
+i=0
+_id=int(input('enter your mobile number: '))
+print('list of items')
+print('1.apple-rs.150\n2.orange-rs.100\n3.grapes-rs.75\n4.banana-rs.50\n5.pineapple-rs.140\n6.strawberry-rs.200\n7.papaya-rs.60')
+print('select 1 to 7 for purchasing and 8 for exit')
+p=int(input())
+while ((p>=1)and(p<=7)):
+  i=i+1
+  print('please enter the quantity')
+  q=int(input())
+  p1=fruits[p]
+  p2=fruitprise[p1]
+  tc=q*p2
+  odritem=odritem+[_id,fruits[p],fruitprise[p1],q,tc]
+  print('list of items')
+  print('1.apple-rs.150\n2.orange-rs.100\n3.grapes-rs.75\n4.banana-rs.50\n5.pineapple-rs.140\n6.strawberry-rs.200\n7.papaya-rs.60')
+  print('select 1 to 7 for purchasing and 8 for exit')
+  p=int(input())
+print('BILLING SYSTEM')
+print('_____________________________________')
+print('ID\tNAME\tPRISE\tQUANTITY\tTOTAL')
+print('_____________________________________')
+ct=0
+ind=0
+for x in range(i):
+  print('%i\t%s\t%0.2f\t\t%d\t\t%0.2f'%(odritem[ind],odritem[ind+1],odritem[ind+2],odritem[ind+3],odritem[ind+4]))
+  ct=ct+odritem[ind+4]
+  ind=ind+5
+print('_____________________________________')
+print('TOTAL AMOUNT %0.2f' %ct) 
+
+info={'_id':_id,'name' :p1,'price' :p2,'quantity':q,'total':ct}
+
+records.insert_one(info)
